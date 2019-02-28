@@ -2,6 +2,7 @@ package example.nio.aspects;
 
 import example.nio.entities.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -40,6 +41,14 @@ public class AfterAspect {
         System.out.println("==> Executing @AfterThrowing on method: " + method);
 
         System.out.println("==> The exception is: " + exception);
+    }
+
+    @After("execution(* example.nio.dao.AccountDAO.findAccounts(..))")
+    public void afterFindAccountAdvice(JoinPoint joinPoint){
+
+        String method = joinPoint.getSignature().toString();
+        System.out.println("==> Executing @After on method: " + method);
+
     }
 
     private void convertAccountNamesToUpperCase(List<Account> result) {
