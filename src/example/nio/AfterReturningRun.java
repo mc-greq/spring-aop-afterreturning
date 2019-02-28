@@ -15,11 +15,24 @@ public class AfterReturningRun {
 
         AccountDAO accountDAO = context.getBean("accountDAO", AccountDAO.class);
 
-        List<Account> accounts = accountDAO.findAccounts();
+        List<Account> accounts = accountDAO.findAccounts(false);
 
         System.out.println("\n\nMain Program: AfterReturningAop");
         System.out.println("--------------");
         accounts.forEach(System.out::println);
+
+        System.out.println("\n");
+
+
+        List<Account> throwingAccounts = null;
+        try {
+            throwingAccounts = accountDAO.findAccounts(true);
+        }catch (Exception e){
+            System.out.println("\n\nProgram Caught Exception");
+        }
+
+        System.out.println("\n\nMain Program: AfterThrowing");
+        System.out.println("--------------");
 
         System.out.println("\n");
 

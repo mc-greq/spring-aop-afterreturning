@@ -3,6 +3,7 @@ package example.nio.aspects;
 import example.nio.entities.Account;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Aspect
 @Component
-public class AfterReturningAspect {
+public class AfterAspect {
 
     @AfterReturning(
             pointcut = "execution(* example.nio.dao.AccountDAO.findAccounts(..))",
@@ -26,6 +27,19 @@ public class AfterReturningAspect {
 
         // post-processing some data
         convertAccountNamesToUpperCase(result);
+    }
+
+    @AfterThrowing(
+            pointcut = "execution(* example.nio.dao.AccountDAO.findAccounts(..))",
+            throwing = "exception"
+    )
+    public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Throwable exception){
+
+        // print method on which we are advising on
+        String method = joinPoint.getSignature().toString();
+        System.out.println("==> Executing @AfterThrowing on method: " + method);
+
+        System.out.println("==> The exception is: " + exception);
     }
 
     private void convertAccountNamesToUpperCase(List<Account> result) {
